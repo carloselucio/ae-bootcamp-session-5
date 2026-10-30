@@ -1,10 +1,15 @@
-// Example-only Playwright smoke test for workflow validation, not production UI coverage.
+// Minimal smoke test confirming the TODO app itself loads and renders.
+// Deeper critical-journey coverage (create/edit/toggle/delete/error) lives
+// in ./todo-journeys.spec.js.
 const { test, expect } = require('@playwright/test');
+const { TodoPage } = require('./pages/TodoPage');
 
-test.describe('Example UI Test', () => {
-  test('navigates to Google', async ({ page }) => {
-    await page.goto('https://www.google.com', { waitUntil: 'domcontentloaded' });
+test.describe('App smoke test', () => {
+  test('loads the TODO app and shows the heading', async ({ page }) => {
+    const todoPage = new TodoPage(page);
 
-    await expect(page).toHaveTitle(/Google/i);
+    await todoPage.goto();
+
+    await expect(todoPage.heading).toBeVisible();
   });
 });
